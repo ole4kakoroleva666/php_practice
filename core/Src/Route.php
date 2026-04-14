@@ -1,4 +1,5 @@
 <?php
+// логика маршрутизации
 namespace Src;
 use Error;
 class Route

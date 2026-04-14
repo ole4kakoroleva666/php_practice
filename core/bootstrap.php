@@ -1,7 +1,7 @@
-<!-- Файл bootstrap.php будет содержать функции для автозагрузки классов, загрузки
-конфигурации и создания объекта приложения. -->
-
 <?php
+/* Файл bootstrap.php будет содержать функции для автозагрузки классов, загрузки
+конфигурации и создания объекта приложения.*/
+
 //Путь до директории с конфигурационными файлами
 const DIR_CONFIG = '/../config';
 //Добавляем пользовательскую функцию автозагрузки классов
@@ -28,4 +28,8 @@ function getConfigs(string $path = DIR_CONFIG): array
  }
  return $settings;
 }
+
+require_once __DIR__ . '/../routes/web.php';
+
+
 return new Src\Application(new Src\Settings(getConfigs()));
