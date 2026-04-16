@@ -1,0 +1,157 @@
+@font-face {
+    font-family: 'Monrope-regular';
+    src: url('/fonts/Manrope-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Monrope-medium';
+    src: url('/fonts/Manrope-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'Monrope-semiBold';
+    src: url('/fonts/Manrope-SemiBold.ttf');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Monrope-regular';
+    background-color: #E5E5E5;
+}
+
+/* Боковое меню */
+.app-container {
+    display: flex;
+    gap: 10px;
+}
+
+.sidebar {
+    width: 550px;
+    background-color: #667D97;
+    color: #E5E5E5;
+    min-height: 100vh;
+}
+
+.sidebar-nav {
+    padding: 20px;
+}
+
+.sidebar-nav h2 {
+    font-size: 43px;
+    margin-bottom: 44px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #34495e;
+    font-family: 'Monrope-semiBold';
+    color: #E5E5E5;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-nav li {
+    margin-bottom: 10px;
+}
+
+.sidebar-nav a {
+    color: #E5E5E5;
+    font-size: 40px;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+}
+
+.sidebar-nav a:hover {
+    background-color: #536b87;
+}
+
+.logout {
+    margin-top: 87px;
+}
+
+.logout-icon {
+    width: 77px;
+    height: 77px;
+    margin-right: 27px;
+    vertical-align: middle;
+}
+
+/* Основной контент */
+.main-content {
+    flex: 1;
+    padding: 40px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+h1 {
+    font-size: 64px;
+    font-family: 'Monrope-semiBold';
+    color: #3E4C5B;
+}
+
+.title-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.owl-icon {
+    width: 333px;
+    height: auto;
+}
+
+
+.titleindex h2 {
+    margin-top: 70px;
+    font-size: 48px;
+    color: #3E4C5B;
+    font-family: 'Monrope-regular';
+    max-width: 780px;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 90px;
+    margin-top: 72px;
+    
+}
+
+.card {
+    background-color: #667D97;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card:hover {
+    background-color: #536b87;
+}
+
+.card a {
+    font-family: 'Monrope-medium';
+    font-size: 30px;
+    color: white;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    width: 100%;
+}
