@@ -3,6 +3,9 @@ namespace Controller;
 
 use Model\Post;
 use Model\User;
+use Model\Employee;
+use Model\Department;
+use Model\Discipline;
 use Src\View;
 use Src\Request;
 use Src\Auth\Auth;
@@ -47,5 +50,34 @@ public function logout(): void
  Auth::logout();
  app()->route->redirect('/hello');
 }
+
+public function departments(): string{
+    $departments = Department::all();
+    return new View('site.departments', ['departments' => $departments]);
+}
+
+public function disciplines(): string{
+    $disciplines = discipline::all();
+    return new View('site.disciplines', ['disciplines' => $disciplines]);
+}
+
+public function employees(Request $request): string
+{
+    $allEmployees = Employee::all();
+    $selectedEmployee = null;
+    $selectedEmployeeId = null;
+    
+    if ($request->get('employee_id')) {
+        $selectedEmployeeId = $request->get('employee_id');
+        $selectedEmployee = Employee::with('department', 'disciplines')->find($selectedEmployeeId);
+    }
+    
+    return new View('site.employees', [
+        'allEmployees' => $allEmployees,
+        'selectedEmployee' => $selectedEmployee,
+        'selectedEmployeeId' => $selectedEmployeeId
+    ]);
+}
+
 
 }

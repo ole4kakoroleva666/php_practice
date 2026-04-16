@@ -18,7 +18,7 @@
     </div>
 
     <div class="card">
-        <a href="<?= app()->route->getUrl('/departments/create') ?>">Добавить дисциплину</a>
+        <a href="<?= app()->route->getUrl('/disciplines/create') ?>">Добавить дисциплину</a>
     </div>
     
     <div class="card">
