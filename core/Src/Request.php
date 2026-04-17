@@ -25,10 +25,9 @@ class Request
     }
  
     public function get($field)
-    {
-        return $this->body[$field];
-    }
-
+{
+    return $this->body[$field] ?? null;
+}
     public function files(): array
     {
     return $_FILES;
