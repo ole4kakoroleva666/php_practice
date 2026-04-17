@@ -93,7 +93,6 @@ body {
     margin: 0 auto;
 }
 
-
 h1 {
     font-size: 64px;
     font-family: 'Monrope-semiBold';
@@ -111,7 +110,6 @@ h1 {
     height: auto;
 }
 
-
 .titleindex h2 {
     margin-top: 70px;
     font-size: 48px;
@@ -125,7 +123,6 @@ h1 {
     flex-wrap: wrap;
     gap: 90px;
     margin-top: 72px;
-    
 }
 
 .card {
@@ -154,25 +151,11 @@ h1 {
     width: 100%;
 }
 
-.table th {
-    vertical-align: middle;
-    word-wrap: break-word;
-    max-width: 250px;
-}
-
-.table td:last-child {
-    min-width: 150px;
-}
-
-.table td:first-child {
-    min-width: 50px;
-}
-
 .main-content {
     flex: 1;
-    display: flex;
     flex-direction: column;
     align-items: center;
+    margin-right: 147px;
 }
 
 .content-box {
@@ -184,15 +167,16 @@ h1 {
     font-size: 64px;
     color: #3E4C5B;
     margin-bottom: 30px;
-    margin-top: 70px;
+    margin-top: 75px;
 }
 
 .filter-bar {
     display: flex;
-    align-items: center;
-    gap: 28px;
-    margin-top: 58px;
+    gap: 35px;
+    margin-top: 35px;
     margin-bottom: 70px;
+    align-items: center;
+
 }
 
 .filter-bar label {
@@ -207,12 +191,9 @@ h1 {
     background-color: #ACB5C0;
     width: 587px;
     height: 75px;
-}
-
-#employee_filter {
+    font-family: 'Monrope-medium';
     color: #34495e;
     font-size: 36px;
-    font-family: 'Monrope-medium';
 }
 
 .filter-bar button {
@@ -234,8 +215,14 @@ h1 {
 .table {
     width: 100%;
     border-collapse: collapse;
+    color: #3E4C5B;
 }
 
+table-card h5 {
+    font-family: 'Monrope-regular';
+    color: #34495e;
+    font-size: 36px;
+}
 
 .table th,
 .table td {
@@ -262,35 +249,60 @@ h1 {
 }
 
 .page-link {
-    outline: none;
-    box-shadow: none;
     display: inline-block;
     padding: 8px 12px;
     text-decoration: none;
     color: #3E4C5B;
     background-color: #ACB5C0;
     border-radius: 6px;
-    border: none;
+    font-size: 20px;
 }
 
 .page-link.active {
-    background-color: rgb(123, 148, 176);
-    color: #3E4C5B;
+    background-color: #8a9bb0;
+    color: white;
 }
 
 .page-link.disabled {
+    opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
 }
+.form-row {
+    display: flex;
+    gap: 35px;
+    margin-top: 35px;
+    margin-bottom: 70px;
+    align-items: center;
 
-.page-link {
-    outline: none !important;
-    box-shadow: none !important;
 }
 
-.page-link:focus,
-.page-link:focus-visible,
-.page-link:active {
-    outline: none !important;
-    box-shadow: none !important;
+.form-row input {
+    flex: 1;
+    padding: 15px 240px 15px 30px;
+    font-size: 36px;
+    border: none;
+    border-radius: 10px;
+    background-color: #ACB5C0;
+    font-family: 'Monrope-regular';
+    color: #3E4C5B;
+}
+
+.form-row input:focus {
+    outline: none;
+}
+
+.btn-create {
+    background-color: #667D97;
+    color: #E5E5E5;
+    font-size: 36px;
+    padding: 13px 33px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Monrope-medium';
+}
+
+.btn-create:hover {
+    background-color: #566d86;
 }

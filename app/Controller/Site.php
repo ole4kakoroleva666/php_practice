@@ -4,6 +4,7 @@ namespace Controller;
 use Model\Post;
 use Model\User;
 use Model\Employee;
+use Model\EmployeeDiscipline;
 use Model\Department;
 use Model\Discipline;
 use Src\View;
@@ -47,12 +48,6 @@ class Site
         app()->route->redirect('/hello');
     }
 
-    public function departments(): string
-    {
-        $departments = Department::all();
-        return new View('site.departments', ['departments' => $departments]);
-    }
-
     public function disciplines(): string
     {
         $disciplines = Discipline::all();
@@ -76,4 +71,56 @@ class Site
             'selectedEmployeeId' => $selectedEmployeeId
         ]);
     }
+
+public function assignment(): string
+{
+    $employees = Employee::with('department')->get()->toArray();
+    $disciplines = Discipline::all()->toArray();
+    $assignments = EmployeeDiscipline::with('employee.department', 'discipline')->get()->toArray();
+    
+    return new View('site.assignment', [
+        'employees' => $employees,
+        'disciplines' => $disciplines,
+        'assignments' => $assignments
+    ]);
+}
+
+public function assignmentCreate(Request $request): void
+{
+    $data = json_decode(file_get_contents('php://input'), true);
+    
+    $exists = EmployeeDiscipline::where('employee_id', $data['employee_id'])
+        ->where('discipline_id', $data['discipline_id'])
+        ->exists();
+    
+    if ($exists) {
+        echo json_encode(['success' => false, 'error' => 'Такое назначение уже существует']);
+        return;
+    }
+    
+    $assignment = EmployeeDiscipline::create([
+        'employee_id' => $data['employee_id'],
+        'discipline_id' => $data['discipline_id']
+    ]);
+    
+    echo json_encode(['success' => true, 'id' => $assignment->id]);
+}
+
+public function assignmentDelete(Request $request): void
+{
+    $data = json_decode(file_get_contents('php://input'), true);
+    EmployeeDiscipline::where('id', $data['id'])->delete();
+    echo json_encode(['success' => true]);
+}
+
+public function departments(Request $request): string
+{
+    if ($request->method === 'POST') {
+        Department::create($request->all());
+        app()->route->redirect('/departments');
+    }
+    
+    $departments = Department::all()->toArray();
+    return new View('site.departments', ['departments' => $departments]);
+}
 }
