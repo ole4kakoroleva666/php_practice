@@ -16,7 +16,7 @@
                     <li><a href="<?= app()->route->getUrl('/') ?>">Главная</a></li>
                     <li><a href="<?= app()->route->getUrl('/employees') ?>">Сотрудники</a></li>
                     <li><a href="<?= app()->route->getUrl('/departments') ?>">Кафедры</a></li>
-                    <li><a href="<?= app()->route->getUrl('/departments') ?>">Дисциплины</a></li>
+                    <li><a href="<?= app()->route->getUrl('/disciplines') ?>">Дисциплины</a></li>
                     <li><a href="<?= app()->route->getUrl('/assignment') ?>">Назначение дисциплин</a></li>
                     <li><a href="<?= app()->route->getUrl('/reports') ?>">Просмотр данных</a></li>
                 </ul>

@@ -48,12 +48,16 @@ class Site
         app()->route->redirect('/hello');
     }
 
-    public function disciplines(): string
-    {
-        $disciplines = Discipline::all();
-        return new View('site.disciplines', ['disciplines' => $disciplines]);
+    public function disciplines(Request $request): string
+{
+    if ($request->method === 'POST') {
+        Discipline::create($request->all());
+        app()->route->redirect('/disciplines');
     }
-
+    
+    $disciplines = Discipline::all()->toArray();
+    return new View('site.disciplines', ['disciplines' => $disciplines]);
+}
     public function employees(Request $request): string
     {
         $allEmployees = Employee::with('department', 'disciplines')->get()->toArray();

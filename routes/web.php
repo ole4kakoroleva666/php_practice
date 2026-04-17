@@ -14,9 +14,9 @@ Route::add(['GET', 'POST'], '/employees/create', [Controller\Site::class, 'emplo
 
 // Кафедры
 Route::add(['GET', 'POST'], '/departments', [Controller\Site::class, 'departments']);
+
 // Дисциплины
-Route::add('GET', '/disciplines', [Controller\Site::class, 'disciplines']);
-Route::add(['GET', 'POST'], '/disciplines/create', [Controller\Site::class, 'disciplinesCreate']);
+Route::add(['GET', 'POST'], '/disciplines', [Controller\Site::class, 'disciplines']);
 
 // Назначение дисциплин
 Route::add('GET', '/assignment', [Controller\Site::class, 'assignment']);
