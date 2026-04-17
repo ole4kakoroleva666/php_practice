@@ -22,3 +22,7 @@ Route::add(['GET', 'POST'], '/disciplines', [Controller\Site::class, 'discipline
 Route::add('GET', '/assignment', [Controller\Site::class, 'assignment']);
 Route::add('POST', '/assignment/create', [Controller\Site::class, 'assignmentCreate']);
 Route::add('POST', '/assignment/delete', [Controller\Site::class, 'assignmentDelete']);
+
+
+Route::add('GET', '/reports', [Controller\Site::class, 'reports']);
+

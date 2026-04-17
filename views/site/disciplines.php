@@ -24,6 +24,7 @@ $items = array_slice($disciplines, $offset, $perPage);
 
         <!-- Таблица дисциплин -->
         <div class="table-card">
+            <p>Все дисциплины</p>
             <table class="table">
                 <thead>
                     <tr>

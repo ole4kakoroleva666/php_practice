@@ -12,7 +12,7 @@ $items = array_slice($departments, $offset, $perPage);
 <div class="main-content">
     <div class="content-box">
 
-        <h1>Кафедры</h1>
+        <h1>Добавить кафедру</h1>
 
         <!-- Форма добавления кафедры -->
         <div class="form-container">
@@ -26,6 +26,7 @@ $items = array_slice($departments, $offset, $perPage);
 
         <!-- Таблица кафедр -->
         <div class="table-card">
+            <p>Все кафедры</p>
             <table class="table">
                 <thead>
                     <tr>

@@ -59,22 +59,22 @@ class Site
     return new View('site.disciplines', ['disciplines' => $disciplines]);
 }
     public function employees(Request $request): string
-    {
-        $allEmployees = Employee::with('department', 'disciplines')->get()->toArray();
-        $selectedEmployee = null;
-        $selectedEmployeeId = null;
-        
-        if ($request->get('employee_id')) {
-            $selectedEmployeeId = $request->get('employee_id');
-            $selectedEmployee = Employee::with('department', 'disciplines')->find($selectedEmployeeId);
-        }
-        
-        return new View('site.employees', [
-            'allEmployees' => $allEmployees,
-            'selectedEmployee' => $selectedEmployee,
-            'selectedEmployeeId' => $selectedEmployeeId
-        ]);
+{
+    $allEmployees = Employee::with('department', 'disciplines')->get()->toArray();
+    $selectedEmployee = null;
+    $selectedEmployeeId = null;
+    
+    if ($request->get('employee_id')) {
+        $selectedEmployeeId = $request->get('employee_id');
+        $selectedEmployee = Employee::with('department', 'disciplines')->find($selectedEmployeeId);
     }
+    
+    return (new View())->render('site.employees', [
+        'allEmployees' => $allEmployees,
+        'selectedEmployee' => $selectedEmployee,
+        'selectedEmployeeId' => $selectedEmployeeId
+    ]);
+}
 
 public function assignment(): string
 {
@@ -127,4 +127,49 @@ public function departments(Request $request): string
     $departments = Department::all()->toArray();
     return new View('site.departments', ['departments' => $departments]);
 }
+
+public function reports(Request $request): string
+{
+    $employees = Employee::all()->toArray();
+    $disciplines = Discipline::all()->toArray();
+    $departments = Department::all()->toArray();
+    
+    $query = EmployeeDiscipline::with('employee.department', 'discipline');
+    
+    if ($request->get('employee_id')) {
+        $query->where('employee_id', $request->get('employee_id'));
+    }
+    
+    if ($request->get('discipline_id')) {
+        $query->where('discipline_id', $request->get('discipline_id'));
+    }
+    
+    if ($request->get('department_id')) {
+        $query->whereHas('employee', function($q) use ($request) {
+            $q->where('department_id', $request->get('department_id'));
+        });
+    }
+    
+    $reports = $query->get()->toArray();
+    
+    return new View('site.reports', [
+        'employees' => $employees,
+        'disciplines' => $disciplines,
+        'departments' => $departments,
+        'reports' => $reports
+    ]);
+}    
+
+    public function employeesCreate(Request $request): string
+{
+    if ($request->method === 'POST') {
+        Employee::create($request->all());
+        app()->route->redirect('/employees');
+    }
+    
+    $departments = Department::all()->toArray();
+    return new View('site.employees_create', ['departments' => $departments]);
+}
+
+
 }

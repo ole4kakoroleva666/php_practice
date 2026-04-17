@@ -15,28 +15,30 @@ $assignmentsForPage = array_slice($assignments, $offset, $perPage);
         <h1>Назначение сотрудника к дисциплине</h1>
 
         <div class="filter-bar">
-    <div class="filter-row">
-        <label>Сотрудник</label>
-        <select id="employee_id">
-            <option value="">Выберите сотрудника</option>
-            <?php foreach ($employees as $emp): ?>
-                <option value="<?= $emp['id'] ?>"><?= $emp['last_name'] ?> <?= $emp['first_name'] ?> <?= $emp['middle_name'] ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
+            <div class="filter-row">
+                <label>Сотрудник</label>
+                <select id="employee_id">
+                    <option value="">Выберите сотрудника</option>
+                    <?php foreach ($employees as $emp): ?>
+                        <option value="<?= $emp['id'] ?>"><?= $emp['last_name'] ?> <?= $emp['first_name'] ?> <?= $emp['middle_name'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-    <div class="filter-row">
-        <label>Дисциплина</label>
-        <select id="discipline_id">
-            <option value="">Выберите дисциплину</option>
-            <?php foreach ($disciplines as $disc): ?>
-                <option value="<?= $disc['id'] ?>"><?= $disc['name'] ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-        <button id="assignBtn">Назначить</button>
-    
-</div>
+            <div class="filter-row">
+                <label>Дисциплина</label>
+                <select id="discipline_id">
+                    <option value="">Выберите дисциплину</option>
+                    <?php foreach ($disciplines as $disc): ?>
+                        <option value="<?= $disc['id'] ?>"><?= $disc['name'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="filter-row">
+                <button id="assignBtn" class="btn-show">Назначить</button>
+            </div>
+        </div>
 
         <div class="table-card">
             <table class="table">
@@ -58,7 +60,9 @@ $assignmentsForPage = array_slice($assignments, $offset, $perPage);
                         <td><?= $item['discipline']['name'] ?></td>
                         <td><?= $item['employee']['department']['name'] ?? '—' ?></td>
                         <td>
-                            <button class="delete-btn" data-id="<?= $item['id'] ?>"><img src="/images/delete.svg" alt="удалить" class="delete-icon"></button>
+                            <button class="delete-btn" data-id="<?= $item['id'] ?>">
+                                Удалить
+                            </button>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -66,27 +70,27 @@ $assignmentsForPage = array_slice($assignments, $offset, $perPage);
             </table>
         </div>
 
-       <?php if ($totalPages > 1): ?>
-<div class="pagination">
-    <?php if ($page > 1): ?>
-        <a href="?page=<?= $page - 1 ?>" class="page-link">«</a>
-    <?php else: ?>
-        <span class="page-link disabled">«</span>
-    <?php endif; ?>
-    
-    <span class="page-link active"><?= $page ?></span>
-    
-    <?php if ($page < $totalPages): ?>
-        <a href="?page=<?= $page + 1 ?>" class="page-link"><?= $page + 1 ?></a>
-    <?php endif; ?>
-    
-    <?php if ($page < $totalPages): ?>
-        <a href="?page=<?= $page + 1 ?>" class="page-link">»</a>
-    <?php else: ?>
-        <span class="page-link disabled">»</span>
-    <?php endif; ?>
-</div>
-<?php endif; ?>
+        <?php if ($totalPages > 1): ?>
+        <div class="pagination">
+            <?php if ($page > 1): ?>
+                <a href="?page=<?= $page - 1 ?>" class="page-link">«</a>
+            <?php else: ?>
+                <span class="page-link disabled">«</span>
+            <?php endif; ?>
+            
+            <span class="page-link active"><?= $page ?></span>
+            
+            <?php if ($page < $totalPages): ?>
+                <a href="?page=<?= $page + 1 ?>" class="page-link"><?= $page + 1 ?></a>
+            <?php endif; ?>
+            
+            <?php if ($page < $totalPages): ?>
+                <a href="?page=<?= $page + 1 ?>" class="page-link">»</a>
+            <?php else: ?>
+                <span class="page-link disabled">»</span>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
 
     </div>
 </div>

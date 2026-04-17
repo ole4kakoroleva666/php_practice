@@ -1,6 +1,6 @@
 <?php
 // Пагинация
-$perPage = 5;
+$perPage =4;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $page = max(1, $page);
 
@@ -18,16 +18,20 @@ $selectedEmployeeId = isset($_GET['employee_id']) ? $_GET['employee_id'] : null;
         <h1>Данные о сотрудниках</h1>
 
         <div class="filter-bar">
-            <label>Сотрудник</label>
-            <select id="employee_filter">
-                <option value="">Все сотрудники</option>
-                <?php foreach ($allEmployees as $emp): ?>
-                    <option value="<?= $emp['id'] ?>" <?= ($selectedEmployeeId == $emp['id']) ? 'selected' : '' ?>>
-                        <?= $emp['last_name'] ?> <?= $emp['first_name'] ?> <?= $emp['middle_name'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <button id="showBtn">Показать</button>
+            <div class="filter-row">
+                <label>Сотрудник</label>
+                <select id="employee_filter">
+                    <option value="">Все сотрудники</option>
+                    <?php foreach ($allEmployees as $emp): ?>
+                        <option value="<?= $emp['id'] ?>" <?= ($selectedEmployeeId == $emp['id']) ? 'selected' : '' ?>>
+                            <?= $emp['last_name'] ?> <?= $emp['first_name'] ?> <?= $emp['middle_name'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="filter-row">
+                <button id="showBtn" class="btn-show">Показать</button>
+            </div>
         </div>
 
         <?php if ($selectedEmployeeId && $selectedEmployee): ?>
