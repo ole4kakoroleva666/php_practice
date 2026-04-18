@@ -1,10 +1,42 @@
-<h2>Регистрация нового пользователя</h2>
-<h3><?= $message ?? ''; ?></h3>
-<form method="post">
-    
-    <label>Имя<input type="text" name="name"></label>
-    <label>Логин<input type="text" name="login"></label>
-    <label>Пароль<input type="password" name="password"></label>
-    <button>Зерегистрироваться</button>
-    
-</form>
+<div class="main-content">
+    <div class="content-box">
+        <div class="auth-container">
+            <h1>Регистрация</h1>
+
+            <?php if (!empty($message)): ?>
+                <div class="auth-success"><?= $message ?></div>
+            <?php endif; ?>
+
+            <form method="post" class="auth-form">
+                <div class="auth-field">
+                    <label>Имя</label>
+                    <input type="text" name="name" required>
+                </div>
+                <div class="auth-field">
+                    <label>Имя пользователя (логин)</label>
+                    <input type="text" name="login" required>
+                </div>
+                <div class="auth-field">
+                    <label>Адрес электронной почты</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="auth-field">
+                    <label>Пароль</label>
+                    <input type="password" name="password" required>
+                </div>
+                <div class="auth-field">
+                    <label>Выберите роль</label>
+                    <select name="role">
+                        <option value="user">Пользователь</option>
+                        <option value="admin">Администратор</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-auth">Создать</button>
+            </form>
+
+            <div class="auth-footer">
+                У вас уже есть аккаунт? <a href="<?= app()->route->getUrl('/login') ?>">Войти</a>
+            </div>
+        </div>
+    </div>
+</div>

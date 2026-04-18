@@ -23,24 +23,62 @@ class Site
         return new View('site.hello', ['message' => 'hello working']);
     }
 
-    public function signup(Request $request): string
-    {
-        if ($request->method === 'POST' && User::create($request->all())) {
-            app()->route->redirect('/go');
-        }
-        return new View('site.signup');
+public function welcome(): string
+{
+    if (Auth::check()) {
+        return new View('site.index');  // ← показываем главную с карточками
+    }
+    return (new View())->render('site.welcome', [], 'empty');
+}
+
+public function login(Request $request): string
+{
+    if ($request->method === 'GET') {
+        return (new View())->render('site.login', [], 'empty');
+    }
+    
+    if (Auth::attempt($request->all())) {
+        app()->route->redirect('/');
+    }
+    return (new View())->render('site.login', ['message' => 'Неправильные логин или пароль'], 'empty');
+}
+
+public function signup(Request $request): string
+{
+     if (!empty($_GET)) {
+        app()->route->redirect('/signup');
     }
 
-    public function login(Request $request): string
-    {
-        if ($request->method === 'GET') {
-            return new View('site.login');
+    if ($request->method === 'POST') {
+        // Проверяем, заполнены ли поля
+        $name = $request->get('name');
+        $login = $request->get('login');
+        $email = $request->get('email');
+        $password = $request->get('password');
+        
+        if (empty($name) || empty($login) || empty($email) || empty($password)) {
+            return (new View())->render('site.signup', ['message' => 'Заполните все поля'], 'empty');
         }
-        if (Auth::attempt($request->all())) {
-            app()->route->redirect('/hello');
+        
+        // Проверяем, не существует ли пользователь
+        $existing = User::where('login', $login)->orWhere('email', $email)->first();
+        if ($existing) {
+            return (new View())->render('site.signup', ['message' => 'Пользователь с таким логином или email уже существует'], 'empty');
         }
-        return new View('site.login', ['message' => 'Неправильные логин или пароль']);
+        
+        // Создаём пользователя
+        User::create([
+            'name' => $name,
+            'login' => $login,
+            'email' => $email,
+            'password' => md5($password), // ← обязательно хешируем пароль!
+            'role' => $request->get('role') ?? 'user'
+        ]);
+        
+        app()->route->redirect('/login');
     }
+    return (new View())->render('site.signup', [], 'empty');
+}
 
     public function logout(): void
     {
