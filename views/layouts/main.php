@@ -17,14 +17,22 @@
                     <li><a href="<?= app()->route->getUrl('/employees') ?>">Сотрудники</a></li>
                     <li><a href="<?= app()->route->getUrl('/departments') ?>">Кафедры</a></li>
                     <li><a href="<?= app()->route->getUrl('/disciplines') ?>">Дисциплины</a></li>
-                    <li><a href="<?= app()->route->getUrl('/assignment') ?>">Назначение дисциплин</a></li>
+                    
+                    <?php if (in_array(app()->auth::user()->role, ['admin', 'decanat'])): ?>
+                        <li><a href="<?= app()->route->getUrl('/assignment') ?>">Назначение дисциплин</a></li>
+                    <?php endif; ?>
+                    
                     <li><a href="<?= app()->route->getUrl('/reports') ?>">Просмотр данных</a></li>
+                    
+                    <?php if (app()->auth::user()->role === 'admin'): ?>
+                        <li><a href="<?= app()->route->getUrl('/decanat/create') ?>">Добавить сотрудника деканата</a></li>
+                    <?php endif; ?>
                 </ul>
                 <div class="logout">
                     <a href="<?= app()->route->getUrl('/logout') ?>">
-                    <img src="/images/logout.svg" alt="Выход" class="logout-icon">Выход
+                        <img src="/images/logout.svg" alt="Выход" class="logout-icon">Выход
                     </a>
-</div>
+                </div>
             </div>
         </aside>
 

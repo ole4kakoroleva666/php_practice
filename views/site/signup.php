@@ -10,19 +10,19 @@
             <form method="post" class="auth-form">
                 <div class="auth-field">
                     <label>Имя</label>
-                    <input type="text" name="name" required>
+                    <input type="text" name="name" placeholder="Имя" required>
                 </div>
                 <div class="auth-field">
                     <label>Имя пользователя (логин)</label>
-                    <input type="text" name="login" required>
+                    <input type="text" name="login" placeholder="Имя пользователя" required>
                 </div>
                 <div class="auth-field">
                     <label>Адрес электронной почты</label>
-                    <input type="email" name="email" required>
+                    <input type="email" name="email" placeholder="Адрес электронной почты" required>
                 </div>
                 <div class="auth-field">
                     <label>Пароль</label>
-                    <input type="password" name="password" required>
+                   <input type="password" name="password" placeholder="Пароль" required>
                 </div>
                 <div class="auth-field">
                     <label>Выберите роль</label>

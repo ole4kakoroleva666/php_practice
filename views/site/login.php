@@ -10,11 +10,11 @@
             <form method="post" class="auth-form">
                 <div class="auth-field">
                     <label>Адрес электронной почты / Имя пользователя</label>
-                    <input type="text" name="login" required>
+                    <input type="text" name="login" placeholder="Имя пользователя" required>
                 </div>
                 <div class="auth-field">
                     <label>Пароль</label>
-                    <input type="password" name="password" required>
+                    <input type="password" name="password" placeholder="Пароль" required>
                 </div>
                 <div class="auth-links">
                     <a href="#" class="forgot-password">Забыли пароль?</a>
