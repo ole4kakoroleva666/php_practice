@@ -14,7 +14,6 @@ $items = array_slice($departments, $offset, $perPage);
 
         <h1>Добавить кафедру</h1>
 
-        <!-- Форма добавления кафедры -->
         <div class="form-container">
             <form method="post" action="<?= app()->route->getUrl('/departments') ?>">
                 <div class="form-row">
@@ -24,7 +23,6 @@ $items = array_slice($departments, $offset, $perPage);
             </form>
         </div>
 
-        <!-- Таблица кафедр -->
         <div class="table-card">
             <p>Все кафедры</p>
             <table class="table">

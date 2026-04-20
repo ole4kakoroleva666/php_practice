@@ -18,7 +18,6 @@ $selectedDepartmentId = isset($_GET['department_id']) ? $_GET['department_id'] :
 
         <h1>Просмотр данных</h1>
 
-        <!-- Форма фильтров -->
         <div class="filter-bar">
             <div class="filter-row">
                 <label>Сотрудник</label>
@@ -59,7 +58,6 @@ $selectedDepartmentId = isset($_GET['department_id']) ? $_GET['department_id'] :
             <button id="showBtn" class="btn-show">Показать</button>
         </div>
 
-        <!-- Таблица результатов -->
         <div class="table-card">
             <table class="table">
                 <thead>

@@ -9,17 +9,13 @@ Route::add(['GET', 'POST'], '/signup', [Controller\Site::class, 'signup']);
 Route::add(['GET', 'POST'], '/login', [Controller\Site::class, 'login']);
 Route::add('GET', '/logout', [Controller\Site::class, 'logout']);
 
-// Сотрудники
 Route::add('GET', '/employees', [Controller\Site::class, 'employees']);
 Route::add(['GET', 'POST'], '/employees/create', [Controller\Site::class, 'employeesCreate']);
 
-// Кафедры
 Route::add(['GET', 'POST'], '/departments', [Controller\Site::class, 'departments']);
 
-// Дисциплины
 Route::add(['GET', 'POST'], '/disciplines', [Controller\Site::class, 'disciplines']);
 
-// Назначение дисциплин
 Route::add('GET', '/assignment', [Controller\Site::class, 'assignment']);
 Route::add('POST', '/assignment/create', [Controller\Site::class, 'assignmentCreate']);
 Route::add('POST', '/assignment/delete', [Controller\Site::class, 'assignmentDelete']);
@@ -27,3 +23,5 @@ Route::add('POST', '/assignment/delete', [Controller\Site::class, 'assignmentDel
 
 Route::add('GET', '/reports', [Controller\Site::class, 'reports']);
 
+
+Route::add('GET|POST', '/decanat/create', [Controller\Site::class, 'decanatCreate']);

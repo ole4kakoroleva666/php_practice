@@ -1,13 +1,9 @@
 <?php
-/* Файл bootstrap.php будет содержать функции для автозагрузки классов, загрузки
-конфигурации и создания объекта приложения.*/
 
-//Путь до директории с конфигурационными файлами
 const DIR_CONFIG = '/../config';
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-//Функция, возвращающая массив всех настроек приложения
 function getConfigs(string $path = DIR_CONFIG): array
 {
  $settings = [];

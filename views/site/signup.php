@@ -24,13 +24,6 @@
                     <label>Пароль</label>
                    <input type="password" name="password" placeholder="Пароль" required>
                 </div>
-                <div class="auth-field">
-                    <label>Выберите роль</label>
-                    <select name="role">
-                        <option value="user">Пользователь</option>
-                        <option value="admin">Администратор</option>
-                    </select>
-                </div>
                 <button type="submit" class="btn-auth">Создать</button>
             </form>
 

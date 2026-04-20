@@ -17,7 +17,6 @@ class View
         $this->data = $data;
     }
 
-    // Полный путь до директории с представлениями
     private function getRoot(): string
     {
         global $app;
@@ -26,20 +25,17 @@ class View
         return $_SERVER['DOCUMENT_ROOT'] . $root . $path;
     }
 
-    // Путь до основного файла с шаблоном сайта (с поддержкой разных layout)
     private function getPathToMain(string $layout = 'main'): string
     {
         return $this->root . '/layouts/' . $layout . '.php';
     }
 
-    // Путь до текущего шаблона
     private function getPathToView(string $view = ''): string
     {
         $view = str_replace('.', '/', $view);
         return $this->getRoot() . "/$view.php";
     }
 
-    // Рендер с выбором layout
     public function render(string $view = '', array $data = [], string $layout = 'main'): string
     {
         $path = $this->getPathToView($view);
@@ -55,7 +51,6 @@ class View
         throw new Exception('Error render');
     }
 
-    // Магический метод для вызова render() при использовании объекта как строки
     public function __toString(): string
     {
         return $this->render($this->view, $this->data);

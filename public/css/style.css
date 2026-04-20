@@ -181,7 +181,6 @@ h1 {
 .filter-row select {
     padding: 12px 20px;
     border-radius: 10px;
-    border: none;
     background-color: #ACB5C0;
     width: 587px;
     height: 75px;
@@ -267,7 +266,6 @@ h1 {
     flex: 1;
     padding: 15px 240px 15px 30px;
     font-size: 36px;
-    border: none;
     border-radius: 10px;
     background-color: #ACB5C0;
     font-family: 'Monrope-regular';
@@ -284,7 +282,6 @@ h1 {
     font-size: 36px;
     padding: 13px 33px;
     border-radius: 10px;
-    border: none;
     cursor: pointer;
     font-family: 'Monrope-medium';
 }
@@ -295,7 +292,6 @@ h1 {
 
 .btn-show {
     background-color: #667D97;
-    border: none;
     color: white;
     font-size: 36px;
     padding: 10px 36px;
@@ -336,7 +332,6 @@ h1 {
     flex: 1;
     padding: 12px 15px;
     font-size: 32px;
-    border: none;
     border-radius: 10px;
     background-color: #ACB5C0;
     font-family: 'Monrope-regular';
@@ -352,7 +347,6 @@ h1 {
 
 .btn-save {
     background-color: #667D97;
-    border: none;
     color: white;
     font-size: 20px;
     padding: 12px 36px;
@@ -367,7 +361,6 @@ h1 {
 
 .delete-btn {
     background-color: #ACB5C0;
-    border: none;
     color: #3E4C5B;
     font-size: 24px;
     padding: 8px 16px;
@@ -377,7 +370,6 @@ h1 {
     width: 100%;
 }
 
-/* ===== WELCOME PAGE ===== */
 .welcome-container {
     display: flex;
     align-items: center;
@@ -421,15 +413,11 @@ h1 {
     height: auto;
 }
 
-/* ===== АВТОРИЗАЦИЯ ===== */
-
-/* Блок формы */
 .auth-container {
     background: transparent;
     text-align: center;
 }
 
-/* Заголовок */
 .auth-container h1 {
     font-size: 64px;
     margin-bottom: 53px;
@@ -454,7 +442,6 @@ h1 {
 .btn-auth {
     width: 100%;
     background-color: #667D97;
-    border: none;
     color: white;
     font-size: 32px;
     padding: 14px 300px;
@@ -468,22 +455,19 @@ h1 {
     background-color: #566d86;
 }
 
-/* Поля */
 .auth-field {
     margin-bottom: 50px;
     text-align: left;
 }
 
 .auth-field label {
-    display: none; /* как на макете — без подписей */
+    display: none;
 }
 
-/* Инпуты */
 .auth-field input,
 .auth-field select {
     width: 100%;
     padding: 20px 460px 20px 60px;
-    border: none;
     border-radius: 6px;
     background-color: #ACB5C0;
     color: #3E4C5B;
@@ -497,8 +481,6 @@ h1 {
     background-color: #cfd6dd;
 }
 
-
-/* Сообщения */
 .auth-success,
 .auth-error {
     margin-bottom: 15px;
@@ -517,7 +499,6 @@ h1 {
     color: #c62828;
 }
 
-/* Нижняя часть */
 .auth-footer {
     margin-top: 15px;
     font-size: 24px;

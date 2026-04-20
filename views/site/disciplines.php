@@ -14,7 +14,6 @@ $items = array_slice($disciplines, $offset, $perPage);
 
         <h1>Дисциплины</h1>
 
-        <!-- Форма добавления дисциплины -->
         <div class="form-row">
             <form method="post" action="<?= app()->route->getUrl('/disciplines') ?>" style="display: flex; gap: 35px; width: 100%;">
                 <input type="text" name="name" placeholder="Название дисциплины" required>
@@ -22,7 +21,6 @@ $items = array_slice($disciplines, $offset, $perPage);
             </form>
         </div>
 
-        <!-- Таблица дисциплин -->
         <div class="table-card">
             <p>Все дисциплины</p>
             <table class="table">

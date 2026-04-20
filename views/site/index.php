@@ -11,20 +11,27 @@
         </div>
 
         <div class="cards">
+
+            <?php if (\Src\Auth\Auth::check() && app()->auth::user()->role === 'admin'): ?>
+                <div class="card">
+                    <a href="<?= app()->route->getUrl('/decanat/create') ?>">Добавить сотрудника деканата</a>
+                </div>
+            <?php endif; ?>
+
             <div class="card">
                 <a href="<?= app()->route->getUrl('/employees/create') ?>">Добавить сотрудника</a>
             </div>
             
             <div class="card">
-                <a href="<?= app()->route->getUrl('/departments/create') ?>">Добавить кафедру</a>
+                <a href="<?= app()->route->getUrl('/departments') ?>">Добавить кафедру</a>
             </div>
 
             <div class="card">
-                <a href="<?= app()->route->getUrl('/disciplines/create') ?>">Добавить дисциплину</a>
+                <a href="<?= app()->route->getUrl('/disciplines') ?>">Добавить дисциплину</a>
             </div>
             
             <div class="card">
-                <a href="<?= app()->route->getUrl('/AssignmentOfDisciplines') ?>">Назначить дисциплину сотруднику</a>
+                <a href="<?= app()->route->getUrl('/assignment') ?>">Назначить дисциплину сотруднику</a>
             </div>
             
             <div class="card">
