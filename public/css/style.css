@@ -178,6 +178,7 @@ h1 {
     width: 140px;
 }
 
+
 .filter-row select {
     padding: 12px 20px;
     border-radius: 10px;
@@ -511,4 +512,35 @@ h1 {
 
 .auth-footer a:hover {
     text-decoration: underline;
+}
+
+.filter-row input#employee_search {
+    background-color: #ACB5C0;
+    border: none;
+    border-radius: 12px;
+    padding: 0 25px;
+    height: 75px;
+    font-size: 28px;
+    font-family: 'Monrope-regular';
+    color: #3E4C5B;
+    flex: 1;
+    min-width: 300px;
+}
+
+.filter-row input#employee_search::placeholder {
+    color: #8a9bb0;
+    font-size: 24px;
+    font-family: 'Monrope-regular';
+}
+
+.filter-row input#employee_search:focus {
+    outline: none;
+    background-color: #cfd6dd;
+}
+
+.employee-photo {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
 }

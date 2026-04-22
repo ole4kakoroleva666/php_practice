@@ -14,13 +14,18 @@ $items = array_slice($departments, $offset, $perPage);
 
         <h1>Добавить кафедру</h1>
 
+        <?php if (!empty($message)): ?>
+    <pre><?= $message ?></pre>
+<?php endif; ?>
+
         <div class="form-container">
             <form method="post" action="<?= app()->route->getUrl('/departments') ?>">
-                <div class="form-row">
-                    <input type="text" name="name" placeholder="Название кафедры" required>
-                    <button type="submit" class="btn-create">Добавить</button>
-                </div>
-            </form>
+            <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+            <div class="form-row">
+            <input type="text" name="name" placeholder="Название кафедры" required>
+            <button type="submit" class="btn-create">Добавить</button>
+    </div>
+</form>
         </div>
 
         <div class="table-card">

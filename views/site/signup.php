@@ -4,10 +4,12 @@
             <h1>Регистрация</h1>
 
             <?php if (!empty($message)): ?>
-                <div class="auth-success"><?= $message ?></div>
+            <pre><?= $message ?></pre>
             <?php endif; ?>
 
             <form method="post" class="auth-form">
+                <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+
                 <div class="auth-field">
                     <label>Имя</label>
                     <input type="text" name="name" placeholder="Имя" required>
@@ -22,8 +24,9 @@
                 </div>
                 <div class="auth-field">
                     <label>Пароль</label>
-                   <input type="password" name="password" placeholder="Пароль" required>
+                    <input type="password" name="password" placeholder="Пароль" required>
                 </div>
+
                 <button type="submit" class="btn-auth">Создать</button>
             </form>
 

@@ -2,10 +2,15 @@
         <h1>Добавление сотрудника деканата</h1>
 
         <?php if (!empty($message)): ?>
+    <pre><?= $message ?></pre>
+<?php endif; ?>
+
+        <?php if (!empty($message)): ?>
             <div class="auth-error"><?= $message ?></div>
         <?php endif; ?>
 
         <form method="post" action="<?= app()->route->getUrl('/decanat/create') ?>" class="employee-form">
+        <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
             <div class="form-row">
                 <label>Имя</label>
                 <input type="text" name="name" required>

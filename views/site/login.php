@@ -4,10 +4,12 @@
             <h1>Войти</h1>
 
             <?php if (!empty($message)): ?>
-                <div class="auth-error"><?= $message ?></div>
-            <?php endif; ?>
+    <pre><?= $message ?></pre>
+<?php endif; ?>
 
             <form method="post" class="auth-form">
+                <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+
                 <div class="auth-field">
                     <label>Адрес электронной почты / Имя пользователя</label>
                     <input type="text" name="login" placeholder="Имя пользователя" required>
@@ -16,9 +18,11 @@
                     <label>Пароль</label>
                     <input type="password" name="password" placeholder="Пароль" required>
                 </div>
+
                 <div class="auth-links">
                     <a href="#" class="forgot-password">Забыли пароль?</a>
                 </div>
+
                 <button type="submit" class="btn-auth">Войти</button>
             </form>
 

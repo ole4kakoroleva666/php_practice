@@ -3,7 +3,13 @@
 
         <h1>Добавление сотрудника</h1>
 
-        <form method="post" action="<?= app()->route->getUrl('/employees/create') ?>" class="employee-form">
+        <?php if (!empty($message)): ?>
+    <pre><?= $message ?></pre>
+<?php endif; ?>
+
+        <form method="post" action="<?= app()->route->getUrl('/employees/create') ?>" class="employee-form" enctype="multipart/form-data">
+        <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+
             <div class="form-row">
                 <label>Фамилия</label>
                 <input type="text" name="last_name" required>
@@ -51,6 +57,11 @@
                         <option value="<?= $dept['id'] ?>"><?= $dept['name'] ?></option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+
+            <div class="form-row">
+                <label>Фото сотрудника</label>
+                <input type="file" name="photo" accept="image/jpeg,image/png,image/jpg">
             </div>
 
             <div class="form-actions">

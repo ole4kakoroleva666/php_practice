@@ -14,11 +14,16 @@ $items = array_slice($disciplines, $offset, $perPage);
 
         <h1>Дисциплины</h1>
 
+        <?php if (!empty($message)): ?>
+    <pre><?= $message ?></pre>
+<?php endif; ?>
+
         <div class="form-row">
             <form method="post" action="<?= app()->route->getUrl('/disciplines') ?>" style="display: flex; gap: 35px; width: 100%;">
-                <input type="text" name="name" placeholder="Название дисциплины" required>
-                <button type="submit" class="btn-create">Добавить</button>
-            </form>
+            <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+            <input type="text" name="name" placeholder="Название дисциплины" required>
+            <button type="submit" class="btn-create">Добавить</button>
+        </form>
         </div>
 
         <div class="table-card">

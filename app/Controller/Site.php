@@ -10,6 +10,7 @@ use Model\Discipline;
 use Src\View;
 use Src\Request;
 use Src\Auth\Auth;
+use Src\Validator\Validator;
 
 class Site
 {
@@ -60,53 +61,50 @@ class Site
             'message' => 'Неправильные логин или пароль'
         ], 'empty');
     }
-
-    public function signup(Request $request): string
-    {
-        if (!empty($_GET)) {
-            app()->route->redirect('/signup');
-        }
-
-        if ($request->method === 'POST') {
-            $name = $request->get('name');
-            $login = $request->get('login');
-            $email = $request->get('email');
-            $password = $request->get('password');
-
-            if (empty($name) || empty($login) || empty($email) || empty($password)) {
-                return (new View())->render('site.signup', [
-                    'message' => 'Заполните все поля'
-                ], 'empty');
-            }
-
-            $existing = User::where('login', $login)
-                ->orWhere('email', $email)
-                ->first();
-
-            if ($existing) {
-                return (new View())->render('site.signup', [
-                    'message' => 'Пользователь с таким логином или email уже существует'
-                ], 'empty');
-            }
-
-            User::create([
-                'name' => $name,
-                'login' => $login,
-                'email' => $email,
-                'password' => md5($password),
-                'role' => 'decanat'
-            ]);
-
-            Auth::attempt([
-                'login' => $login,
-                'password' => $password
-            ]);
-
-            app()->route->redirect('/');
-        }
-
-        return (new View())->render('site.signup', [], 'empty');
+public function signup(Request $request): string
+{
+    if (!empty($_GET)) {
+        app()->route->redirect('/signup');
     }
+
+    if ($request->method === 'POST') {
+        $validator = new Validator($request->all(), [
+            'name' => ['required', 'min:2'],
+            'login' => ['required', 'min:3', 'unique:users,login'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'min:6']
+        ], [
+            'required' => 'Поле :field обязательно',
+            'min' => 'Поле :field слишком короткое',
+            'email' => 'Поле :field должно содержать корректный email',
+            'unique' => 'Поле :field должно быть уникально'
+        ]);
+
+        if ($validator->fails()) {
+            return (new View())->render('site.signup', [
+                'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
+            ], 'empty');
+        }
+
+        User::create([
+            'name' => $request->get('name'),
+            'login' => $request->get('login'),
+            'email' => $request->get('email'),
+            'password' => md5($request->get('password')),
+            'role' => 'decanat'
+        ]);
+
+        Auth::attempt([
+            'login' => $request->get('login'),
+            'password' => $request->get('password')
+        ]);
+
+        app()->route->redirect('/');
+        exit;
+    }
+
+    return (new View())->render('site.signup', [], 'empty');
+}
 
     public function logout(): void
     {
@@ -115,57 +113,180 @@ class Site
     }
 
     public function disciplines(Request $request): string
-    {
-        $this->requireRole(['decanat']);
+{
+    $this->requireRole(['decanat']);
 
-        if ($request->method === 'POST') {
-            Discipline::create($request->all());
-            app()->route->redirect('/disciplines');
+    if ($request->method === 'POST') {
+        $validator = new Validator($request->all(), [
+            'name' => ['required', 'min:2', 'unique:disciplines,name']
+        ], [
+            'required' => 'Название дисциплины обязательно',
+            'min' => 'Название дисциплины слишком короткое',
+            'unique' => 'Такая дисциплина уже существует'
+        ]);
+
+        if ($validator->fails()) {
+            return (new View())->render('site.disciplines', [
+                'disciplines' => Discipline::all()->toArray(),
+                'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
+            ]);
         }
 
-        return (new View())->render('site.disciplines', [
-            'disciplines' => Discipline::all()->toArray()
+        Discipline::create([
+            'name' => $request->get('name')
         ]);
+
+        app()->route->redirect('/disciplines');
+        exit;
     }
+
+    return (new View())->render('site.disciplines', [
+        'disciplines' => Discipline::all()->toArray()
+    ]);
+}
 
     public function employees(Request $request): string
     {
         $this->requireRole(['decanat']);
 
-        $allEmployees = Employee::with('department', 'disciplines')->get()->toArray();
+        $query = Employee::with('department', 'disciplines');
+
+        $search = trim($request->get('search') ?? '');
+
+        if ($search !== '') {
+            $query->where(function ($q) use ($search) {
+                $q->where('last_name', 'like', "%{$search}%")
+                    ->orWhere('first_name', 'like', "%{$search}%")
+                    ->orWhere('middle_name', 'like', "%{$search}%");
+            });
+        }
+
+        $allEmployees = $query->get()->toArray();
+
+        $selectedEmployee = null;
+        $selectedEmployeeId = $request->get('employee_id');
+
+        if (!empty($selectedEmployeeId)) {
+            $selectedEmployee = Employee::with('department', 'disciplines')
+                ->find($selectedEmployeeId);
+        }
 
         return (new View())->render('site.employees', [
-            'allEmployees' => $allEmployees
+            'allEmployees' => $allEmployees,
+            'selectedEmployee' => $selectedEmployee,
+            'search' => $search
         ]);
     }
 
     public function employeesCreate(Request $request): string
-    {
-        $this->requireRole(['decanat']);
+{
+    $this->requireRole(['decanat']);
 
-        if ($request->method === 'POST') {
-            Employee::create($request->all());
-            app()->route->redirect('/employees');
+    if ($request->method === 'POST') {
+        $validator = new Validator($request->all(), [
+            'last_name' => ['required', 'min:2'],
+            'first_name' => ['required', 'min:2'],
+            'position' => ['required', 'min:2'],
+            'birth_date' => ['required', 'date'],
+            'department_id' => ['required']
+        ], [
+            'required' => 'Поле :field обязательно',
+            'min' => 'Поле :field слишком короткое',
+            'date' => 'Поле :field содержит некорректную дату'
+        ]);
+
+        $errors = $validator->errors();
+
+        if (!Department::find($request->get('department_id'))) {
+            $errors['department_id'][] = 'Выбранная кафедра не существует';
         }
 
-        return (new View())->render('site.employees_create', [
-            'departments' => Department::all()->toArray()
-        ]);
+        if (isset($_FILES['photo']) && is_array($_FILES['photo']) && $_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
+            if ($_FILES['photo']['error'] !== UPLOAD_ERR_OK) {
+                $errors['photo'][] = 'Ошибка при загрузке изображения';
+            } else {
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+                $ext = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
+
+                if (!in_array($ext, $allowedExtensions, true)) {
+                    $errors['photo'][] = 'Допустимы только jpg, jpeg, png, webp';
+                } elseif (getimagesize($_FILES['photo']['tmp_name']) === false) {
+                    $errors['photo'][] = 'Файл должен быть изображением';
+                }
+            }
+        }
+
+        if ($validator->fails() || !empty($errors)) {
+            return (new View())->render('site.employees_create', [
+                'departments' => Department::all()->toArray(),
+                'message' => json_encode($errors, JSON_UNESCAPED_UNICODE)
+            ]);
+        }
+
+        $data = $request->all();
+        unset($data['csrf_token']);
+
+        if (isset($_FILES['photo']) && is_array($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+            $ext = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
+
+            if (in_array($ext, $allowedExtensions, true)) {
+                $uploadDir = realpath(__DIR__ . '/../../public') . '/uploads/';
+
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+
+                $filename = uniqid('employee_', true) . '.' . $ext;
+
+                if (move_uploaded_file($_FILES['photo']['tmp_name'], $uploadDir . $filename)) {
+                    $data['photo'] = app()->route->getUrl('/uploads/' . $filename);
+                }
+            }
+        }
+
+        Employee::create($data);
+        app()->route->redirect('/employees');
+        exit;
     }
+
+    return (new View())->render('site.employees_create', [
+        'departments' => Department::all()->toArray()
+    ]);
+}
 
     public function departments(Request $request): string
-    {
-        $this->requireRole(['decanat']);
+{
+    $this->requireRole(['decanat']);
 
-        if ($request->method === 'POST') {
-            Department::create($request->all());
-            app()->route->redirect('/departments');
+    if ($request->method === 'POST') {
+        $validator = new Validator($request->all(), [
+            'name' => ['required', 'min:2', 'unique:departments,name']
+        ], [
+            'required' => 'Название кафедры обязательно',
+            'min' => 'Название кафедры слишком короткое',
+            'unique' => 'Такая кафедра уже существует'
+        ]);
+
+        if ($validator->fails()) {
+            return (new View())->render('site.departments', [
+                'departments' => Department::all()->toArray(),
+                'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
+            ]);
         }
 
-        return (new View())->render('site.departments', [
-            'departments' => Department::all()->toArray()
+        Department::create([
+            'name' => $request->get('name')
         ]);
+
+        app()->route->redirect('/departments');
+        exit;
     }
+
+    return (new View())->render('site.departments', [
+        'departments' => Department::all()->toArray()
+    ]);
+}
 
     public function assignment(): string
     {
@@ -179,42 +300,75 @@ class Site
     }
 
     public function assignmentCreate(Request $request): void
-    {
-        $this->requireRole(['decanat']);
+{
+    $this->requireRole(['decanat']);
 
-        $data = json_decode(file_get_contents('php://input'), true);
+    header('Content-Type: application/json; charset=utf-8');
 
-        $exists = EmployeeDiscipline::where('employee_id', $data['employee_id'])
-            ->where('discipline_id', $data['discipline_id'])
-            ->exists();
+    $validator = new Validator($request->all(), [
+        'employee_id' => ['required'],
+        'discipline_id' => ['required']
+    ], [
+        'required' => 'Поле :field обязательно'
+    ]);
 
-        if ($exists) {
-            echo json_encode([
-                'success' => false,
-                'error' => 'Уже существует'
-            ]);
-            return;
-        }
+    $errors = $validator->errors();
 
-        $assignment = EmployeeDiscipline::create($data);
-
-        echo json_encode([
-            'success' => true,
-            'id' => $assignment->id
-        ]);
+    if (!Employee::find($request->get('employee_id'))) {
+        $errors['employee_id'][] = 'Сотрудник не найден';
     }
 
-    public function assignmentDelete(): void
+    if (!Discipline::find($request->get('discipline_id'))) {
+        $errors['discipline_id'][] = 'Дисциплина не найдена';
+    }
+
+    if ($validator->fails() || !empty($errors)) {
+        echo json_encode([
+            'success' => false,
+            'error' => $errors
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+
+    $employeeId = $request->get('employee_id');
+    $disciplineId = $request->get('discipline_id');
+
+    $exists = EmployeeDiscipline::where('employee_id', $employeeId)
+        ->where('discipline_id', $disciplineId)
+        ->exists();
+
+    if ($exists) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Такое назначение уже существует'
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+
+    $assignment = EmployeeDiscipline::create([
+        'employee_id' => $employeeId,
+        'discipline_id' => $disciplineId
+    ]);
+
+    echo json_encode([
+        'success' => true,
+        'id' => $assignment->id
+    ], JSON_UNESCAPED_UNICODE);
+}
+
+    public function assignmentDelete(Request $request): void
     {
         $this->requireRole(['decanat']);
 
-        $data = json_decode(file_get_contents('php://input'), true);
+        header('Content-Type: application/json; charset=utf-8');
 
-        EmployeeDiscipline::where('id', $data['id'])->delete();
+        $id = $request->get('id');
+
+        EmployeeDiscipline::where('id', $id)->delete();
 
         echo json_encode([
             'success' => true
-        ]);
+        ], JSON_UNESCAPED_UNICODE);
     }
 
     public function reports(Request $request): string
@@ -228,56 +382,18 @@ class Site
         }
 
         if ($request->get('department_id')) {
-            $query->whereHas('employee', function ($q) use ($request) {
-                $q->where('department_id', $request->get('department_id'));
+            $departmentId = $request->get('department_id');
+            $query->whereHas('employee', function ($q) use ($departmentId) {
+                $q->where('department_id', $departmentId);
             });
         }
 
+        $assignments = $query->get()->toArray();
+
         return (new View())->render('site.reports', [
+            'reports' => $assignments,
             'employees' => Employee::all()->toArray(),
-            'departments' => Department::all()->toArray(),
-            'disciplines' => Discipline::all()->toArray(),
-            'reports' => $query->get()->toArray()
+            'departments' => Department::all()->toArray()
         ]);
-    }
-
-    public function decanatCreate(Request $request): string
-    {
-        $this->requireRole(['admin']);
-
-        if ($request->method === 'POST') {
-            $name = $request->get('name');
-            $login = $request->get('login');
-            $email = $request->get('email');
-            $password = $request->get('password');
-
-            if (empty($name) || empty($login) || empty($email) || empty($password)) {
-                return (new View())->render('site.decanat_create', [
-                    'message' => 'Заполните все поля'
-                ]);
-            }
-
-            $existing = User::where('login', $login)
-                ->orWhere('email', $email)
-                ->first();
-
-            if ($existing) {
-                return (new View())->render('site.decanat_create', [
-                    'message' => 'Пользователь с таким логином или email уже существует'
-                ]);
-            }
-
-            User::create([
-                'name' => $name,
-                'login' => $login,
-                'email' => $email,
-                'password' => md5($password),
-                'role' => 'decanat'
-            ]);
-
-            app()->route->redirect('/');
-        }
-
-        return (new View())->render('site.decanat_create');
     }
 }

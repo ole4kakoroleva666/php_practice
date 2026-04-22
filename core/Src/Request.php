@@ -1,5 +1,6 @@
 <?php
 namespace Src;
+
 use Error;
 
 class Request
@@ -7,6 +8,7 @@ class Request
     protected array $body;
     public string $method;
     public array $headers;
+
     public function __construct()
     {
         $this->body = $_REQUEST;
@@ -16,25 +18,26 @@ class Request
 
     public function all(): array
     {
-        return $this->body + $this->files();
+        return $this->body;
     }
 
-    public function set($field, $value):void
+    public function set($field, $value): void
     {
-    $this->body[$field] = $value;
+        $this->body[$field] = $value;
     }
- 
+
     public function get($field)
-{
-    return $this->body[$field] ?? null;
-}
+    {
+        return $this->body[$field] ?? null;
+    }
+
     public function files(): array
     {
-    return $_FILES;
+        return $_FILES;
     }
 
     public function __get($key)
-{
-    return $this->body[$key] ?? null;
-}
+    {
+        return $this->body[$key] ?? null;
     }
+}

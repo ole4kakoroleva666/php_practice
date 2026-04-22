@@ -24,4 +24,4 @@ Route::add('POST', '/assignment/delete', [Controller\Site::class, 'assignmentDel
 Route::add('GET', '/reports', [Controller\Site::class, 'reports']);
 
 
-Route::add('GET|POST', '/decanat/create', [Controller\Site::class, 'decanatCreate']);
+Route::add(['GET', 'POST'], '/decanat/create', [Controller\Site::class, 'decanatCreate']);
