@@ -99,10 +99,10 @@ document.getElementById('assignBtn').onclick = function() {
     let disciplineId = document.getElementById('discipline_id').value;
     let csrfToken = '<?= app()->auth::generateCSRF() ?>';
 
-    if (!employeeId || !disciplineId) {
-        alert('Выберите сотрудника и дисциплину');
-        return;
-    }
+    //if (!employeeId || !disciplineId) {
+        //alert('Выберите сотрудника и дисциплину');
+        //return;
+    //}
 
     fetch('<?= app()->route->getUrl('/assignment/create') ?>', {
         method: 'POST',
@@ -120,7 +120,7 @@ document.getElementById('assignBtn').onclick = function() {
         if (data.success) {
             window.location.reload();
         } else {
-            alert(data.error || 'Ошибка');
+            alert(JSON.stringify(data.error, null, 2));
         }
     });
 };
