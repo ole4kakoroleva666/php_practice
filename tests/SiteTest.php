@@ -8,7 +8,7 @@ class SiteTest extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
-        $_SERVER['DOCUMENT_ROOT'] = '/var/www/html';
+        $_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__ . '/..');
 
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
